@@ -34,13 +34,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")/*for this no need to specify username password*/.permitAll()
                 .antMatchers("/api/**").hasRole(STUDENT.name())
-                /* .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(STUDENT_WRITE.name())
-                 .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(STUDENT_WRITE.name())
-                 .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(STUDENT_WRITE.name())
-                 .antMatchers("/management/api/**").hasAnyRole(ADMIN.name(), ADMINTRAINEE.name()) */
-                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(STUDENT_WRITE.getPermission())
-                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(STUDENT_WRITE.getPermission())
-                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(STUDENT_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(STUDENT_WRITE.name())
+                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(STUDENT_WRITE.name())
+                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(STUDENT_WRITE.name())
                 .antMatchers("/management/api/**").hasAnyRole(ADMIN.name(), ADMINTRAINEE.name())
                 .anyRequest()
                 .authenticated()
@@ -55,21 +51,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails lakshmi = User.builder()
                 .username("lakshmiDBUser")
                 .password(passwordEncoder.encode("password"))
-                //               .roles(STUDENT.name())//ROLE_STUDENT
-                .authorities(STUDENT.getGrantedAuthorities())
+                .roles(STUDENT.name())//ROLE_STUDENT
                 .build();
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("password123"))
-                //               .roles(ADMIN.name())
-                .authorities(ADMIN.getGrantedAuthorities())
+                .roles(ADMIN.name())
                 .build();
-        UserDetails admintrainee = User.builder()
-                .username("adminTrainee")
-                .password(passwordEncoder.encode("password123"))
-                //               .roles(ADMINTRAINEE.name())
-                .authorities(ADMINTRAINEE.getGrantedAuthorities())
-                .build();
-        return new InMemoryUserDetailsManager(lakshmi, admin, admintrainee);
+        return new InMemoryUserDetailsManager(lakshmi, admin);
     }
 }
