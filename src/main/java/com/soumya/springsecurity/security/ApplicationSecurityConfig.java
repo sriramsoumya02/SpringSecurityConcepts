@@ -12,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.soumya.springsecurity.security.ApplicationUserRole.ADMIN;
+import static com.soumya.springsecurity.security.ApplicationUserRole.STUDENT;
+
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,8 +29,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*")//for this no need to specify username password
-                .permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*")/*for this no need to specify username password*/.permitAll()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -41,12 +44,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails lakshmi = User.builder()
                 .username("lakshmiDBUser")
                 .password(passwordEncoder.encode("password"))
-                .roles("STUDENT")//ROLE_STUDENT
+                .roles(STUDENT.name())//ROLE_STUDENT
                 .build();
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("password123"))
-                .roles("ADMIN")
+                .roles(ADMIN.name())
                 .build();
         return new InMemoryUserDetailsManager(lakshmi, admin);
     }

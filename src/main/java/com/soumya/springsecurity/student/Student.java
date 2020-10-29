@@ -2,18 +2,18 @@ package com.soumya.springsecurity.student;
 
 public class Student {
     private final long Id;
-    private final String password;
+    private final String name;
 
-    public Student(long id, String password) {
+    public Student(long id, String name) {
         Id = id;
-        this.password = password;
+        this.name = name;
     }
 
     public long getId() {
         return Id;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 }
